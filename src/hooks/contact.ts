@@ -31,7 +31,7 @@ export function useGetContactList() {
   const { error, data, loading } = useQuery(GET_CONTACT_LIST, {
     variables: {
       distinct_on: [], // Your distinct_on value here
-      limit: 5, // Your limit value here
+      limit: 20, // Your limit value here
       offset: 0, // Your offset value here
       order_by: [], // Your order_by value here
       where: null, // Your where condition here

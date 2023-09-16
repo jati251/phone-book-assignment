@@ -4,10 +4,8 @@ export interface CreateContactProps {
   phones: { number: string }[];
 }
 
-export interface ContactProfile {
-  first_name: string;
+export interface ContactProfile extends CreateContactProps {
   id: number;
-  last_name: string;
   phones: PhoneNumber[];
   __typename: string;
 }
