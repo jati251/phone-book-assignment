@@ -1,7 +1,7 @@
 import { CreateContactProps } from "@/types/contact";
 import { gql, useQuery } from "@apollo/client";
 
-export async function useGetContactList() {
+export function useGetContactList() {
   const GET_CONTACT_LIST = gql`
     query GetContactList(
       $distinct_on: [contact_select_column!]
@@ -29,7 +29,13 @@ export async function useGetContactList() {
   `;
 
   const { error, data, loading } = useQuery(GET_CONTACT_LIST, {
-    variables: { where: { first_name: { _like: "%John%" } } },
+    variables: {
+      distinct_on: [], // Your distinct_on value here
+      limit: 5, // Your limit value here
+      offset: 0, // Your offset value here
+      order_by: [], // Your order_by value here
+      where: null, // Your where condition here
+    },
   });
 
   return { error, loading, data };
