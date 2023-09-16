@@ -1,5 +1,6 @@
 import tw from "twin.macro";
 import { css } from "@emotion/react";
+import { ContactProfile } from "@/types/contact";
 
 const containerStyles = css`
   ${tw`flex justify-between cursor-pointer gap-2 relative p-4 w-full bg-white rounded-lg overflow-hidden shadow hover:shadow-md`}
@@ -17,7 +18,7 @@ const onlineStyles = css`
   ${tw`text-sm text-gray-600`}
 `;
 
-function EmotionComponent() {
+function ContactCard({ contact }: { contact: ContactProfile }) {
   return (
     <div css={containerStyles}>
       <div
@@ -27,7 +28,9 @@ function EmotionComponent() {
       >
         <div css={avatarStyles}></div>
         <div css={nameStyles}>
-          <p>John doe</p>
+          <p>
+            {contact.first_name} {contact.last_name}
+          </p>
         </div>
       </div>
       <div
@@ -35,10 +38,10 @@ function EmotionComponent() {
           ${tw`flex items-center`}
         `}
       >
-        <p css={onlineStyles}>Last online 4 hours ago</p>
+        <p css={onlineStyles}>{contact.phones[0].number}</p>
       </div>
     </div>
   );
 }
 
-export default EmotionComponent;
+export default ContactCard;
