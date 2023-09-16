@@ -1,8 +1,7 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-
 const createApolloClient = () => {
   return new ApolloClient({
-    uri: process.env.BASE_URL,
+    uri: "https://wpe-hiring.tokopedia.net/graphql",
     cache: new InMemoryCache(),
   });
 };
