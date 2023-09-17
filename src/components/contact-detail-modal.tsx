@@ -5,6 +5,8 @@ import { useGetContactDetail } from "@/hooks/contact";
 import tw from "twin.macro";
 import EditContactIcon from "@/icons/edit-contact-icon";
 import { useRouter } from "next/router";
+import DeleteIcon from "@/icons/delete-icon";
+import Swal from "sweetalert2";
 
 const ContactDetailModal = ({
   id,
@@ -26,6 +28,22 @@ const ContactDetailModal = ({
 
   const handleEdit = () => {
     router.push(`/edit/${id}`);
+  };
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: "Do you want delete this contact?",
+      showDenyButton: true,
+      confirmButtonText: "Delete",
+      denyButtonText: `Cancel`,
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        Swal.fire("Contact has been deleted", "", "success");
+      } else if (result.isDenied) {
+        Swal.fire("Changes are not saved", "", "info");
+      }
+    });
   };
 
   useEffect(() => {
@@ -51,12 +69,15 @@ const ContactDetailModal = ({
                     alt="Profile picture"
                   ></img>
                 </div>
-                <div css={tw`flex justify-center items-center gap-4`}>
+                <div css={tw`flex justify-center items-center gap-3`}>
                   <h2 css={tw`text-center text-2xl font-semibold mt-3`}>
                     {contactDetail?.first_name} {contactDetail?.last_name}
                   </h2>
                   <div onClick={handleEdit} css={tw`cursor-pointer`}>
                     <EditContactIcon />
+                  </div>
+                  <div onClick={handleDelete} css={tw`cursor-pointer`}>
+                    <DeleteIcon />
                   </div>
                 </div>
 
