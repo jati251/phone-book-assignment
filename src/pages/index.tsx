@@ -2,6 +2,7 @@ import ContactCard from "@/components/contact-card";
 import ContactDetailModal from "@/components/contact-detail-modal";
 import ContactList from "@/components/contact-list";
 import Pagination from "@/components/pagination";
+import AddContactIcon from "@/icons/add-contact-icon";
 import { ContactContext } from "@/providers/contact-list-provider";
 import { ContactContextType, ContactProfile } from "@/types/contact";
 import { Global } from "@emotion/react";
@@ -36,7 +37,7 @@ export default function Home() {
     contactList && newArray.push(contactList[i]);
 
     setBookmarked(newArray);
-    setContacts(contacts.filter((item, index) => index !== i));
+    setContacts(contactList.filter((item, index) => index !== i));
   };
 
   const handleRemoveBookmark = (i: number) => {
@@ -50,6 +51,10 @@ export default function Home() {
   const handleSearch = (e: any) => {
     e.preventDefault();
     handleFetchSearch(currentPage, name);
+  };
+
+  const handleAdd = (e: any) => {
+    e.preventDefault();
   };
 
   const globalStyles = {
@@ -73,7 +78,7 @@ export default function Home() {
         <main css={tw`flex justify-center max-h-screen`}>
           <ContactList>
             <div
-              css={tw`flex flex-col gap-4 justify-start w-full py-6 font-bold text-2xl`}
+              css={tw`flex flex-col gap-4 justify-start w-full py-3 font-bold text-2xl`}
             >
               <span>Contact List</span>
               <form action="submit" onSubmit={handleSearch} css={tw``}>
@@ -89,10 +94,16 @@ export default function Home() {
                     />
                     <button
                       type="submit"
-                      css={tw` bg-white flex rounded border border-gray-600 px-2 py-2 lg:px-12 text-sm font-medium text-gray-600 cursor-pointer hover:border-green-500 hover:bg-green-600 hover:text-white focus:outline-none focus:ring active:bg-green-500`}
+                      css={tw` bg-white flex rounded border border-gray-600 px-3 py-2 lg:px-12 text-sm font-medium text-gray-600 cursor-pointer hover:border-green-500 hover:bg-green-600 hover:text-white focus:outline-none focus:ring active:bg-green-500`}
                     >
                       Search
                     </button>
+                    <div
+                      onClick={handleAdd}
+                      css={tw` bg-white flex rounded border border-gray-600 justify-center items-center lg:px-4 cursor-pointer `}
+                    >
+                      <AddContactIcon />
+                    </div>
                   </div>
                 </div>
               </form>

@@ -47,7 +47,11 @@ function ContactCard({
           ${tw`flex items-center`}
         `}
       >
-        <div css={avatarStyles}></div>
+        <img
+          css={tw`w-12 h-12 rounded-full mx-auto`}
+          src="https://picsum.photos/200"
+          alt="Profile picture"
+        ></img>
         <div css={nameStyles}>
           <p>
             {contact.first_name} {contact.last_name}

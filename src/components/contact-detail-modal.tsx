@@ -14,51 +14,56 @@ const ContactDetailModal = ({
   open: boolean;
 }) => {
   const [contact, setContact] = useState<ContactProfile>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { error, data, loading } = useGetContactDetail(id);
 
   const handleClose = () => {
-    setIsLoading(true);
     onClose();
   };
 
   useEffect(() => {
     setContact(undefined);
     setContact(data?.contact_by_pk);
-    setIsLoading(false);
   }, [data]);
 
   return (
     <>
-      {open && contact && (
+      {open && (
         <div
           css={tw`fixed inset-0 z-[70] grid place-content-end lg:place-content-center bg-gray-500 bg-opacity-50`}
         >
           <Outside onClick={handleClose}>
             <article>
-              <main
-                css={tw`flex flex-col lg:rounded-lg px-4 py-6 bg-white w-[300px] max-h-[800px] h-screen overflow-y-auto`}
+              <div
+                css={tw` w-[250px] h-screen lg:h-auto overflow-y-auto bg-white rounded-lg shadow-md p-8`}
               >
-                <div css={tw`flex flex-col`}>
-                  <span>{contact?.first_name}</span>
-                  <span>{contact?.first_name}</span>
-                  <span>{contact?.first_name}</span>
-                  <span>{contact?.first_name}</span>
-
-                  <span>{contact?.first_name}</span>
-                  <span>{contact?.first_name}</span>
+                <div css={tw`flex mt-10`}>
+                  <img
+                    css={tw`w-32 h-32 rounded-full mx-auto`}
+                    src="https://picsum.photos/200"
+                    alt="Profile picture"
+                  ></img>
                 </div>
 
-                <div css={tw`flex flex-col`}>
-                  <span>{contact?.first_name}</span>
-                  <span>{contact?.first_name}</span>
-                  <span>{contact?.first_name}</span>
-                  <span>{contact?.first_name}</span>
+                <h2 css={tw`text-center text-2xl font-semibold mt-3`}>
+                  {contact?.first_name} {contact?.last_name}
+                </h2>
+                <p css={tw`text-center text-gray-600 mt-1`}>
+                  Software Engineer
+                </p>
 
-                  <span>{contact?.first_name}</span>
-                  <span>{contact?.first_name}</span>
+                <div css="mt-10">
+                  <h3 css={tw`text-sm font-semibold mt-10`}>Phone Numbers</h3>
+                  <hr></hr>
+
+                  {contact?.phones.map((el, index) => {
+                    return (
+                      <div>
+                        <span key={index}>{el.number}</span>
+                      </div>
+                    );
+                  })}
                 </div>
-              </main>
+              </div>
             </article>
           </Outside>
         </div>
