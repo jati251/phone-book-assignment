@@ -16,6 +16,6 @@ export interface PhoneNumber {
 }
 
 export type ContactContextType = {
-  useHandleFetchSearch: (page: number, name: string) => void;
+  handleFetchSearch: (page: number, name: string) => void;
   contacts: ContactProfile[];
 };

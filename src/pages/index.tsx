@@ -9,7 +9,7 @@ import { useContext, useEffect, useState, createContext } from "react";
 import tw from "twin.macro";
 
 export default function Home() {
-  const { contacts, useHandleFetchSearch } = useContext(
+  const { contacts, handleFetchSearch } = useContext(
     ContactContext
   ) as ContactContextType;
 
@@ -28,7 +28,7 @@ export default function Home() {
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
-    useHandleFetchSearch(newPage, name);
+    handleFetchSearch(newPage, name);
   };
 
   const handleAddBookmark = (i: number) => {
@@ -48,7 +48,7 @@ export default function Home() {
 
   const handleSearch = (e: any) => {
     e.preventDefault();
-    useHandleFetchSearch(currentPage, name);
+    handleFetchSearch(currentPage, name);
   };
 
   const globalStyles = {

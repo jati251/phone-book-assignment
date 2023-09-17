@@ -7,7 +7,7 @@ export const ContactContext = createContext<null | ContactContextType>(null);
 const ContactListProvider = ({ children }: any) => {
   const { error, contacts, loading, refetch } = useGetContactList();
 
-  const useHandleFetchSearch = (page: number, value: string) => {
+  const handleFetchSearch = (page: number, value: string) => {
     const offset = (page - 1) * 10;
     let variables: any = {
       limit: 10,
@@ -32,7 +32,7 @@ const ContactListProvider = ({ children }: any) => {
   }, [contacts]);
   return (
     <>
-      <ContactContext.Provider value={{ contacts, useHandleFetchSearch }}>
+      <ContactContext.Provider value={{ contacts, handleFetchSearch }}>
         {children}
       </ContactContext.Provider>
     </>
