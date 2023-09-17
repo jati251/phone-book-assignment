@@ -4,18 +4,12 @@ import {
   EDIT_CONTACT_BY_ID,
   EDIT_PHONE_NUMBER,
 } from "@/hooks/contact";
-import { ContactProfile } from "@/types/contact";
+import { ContactFormProps } from "@/types/contact";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import tw from "twin.macro";
-
-interface ContactFormProps {
-  isEdit: boolean;
-  contact?: ContactProfile;
-  fetchContacts: () => void;
-}
 
 export default function ContactForm({
   fetchContacts,
@@ -39,11 +33,10 @@ export default function ContactForm({
   //FUNCTIONS
 
   const createContact = async () => {
-    const phones = phoneNumber.map((el) => {
-      return { number: el };
-    });
-
     try {
+      const phones = phoneNumber.map((el) => {
+        return { number: el };
+      });
       const { data } = await AddContactWithPhones({
         variables: { first_name: firstName, last_name: lastName, phones },
       });
@@ -56,11 +49,11 @@ export default function ContactForm({
   };
 
   const editContact = async () => {
-    const updatedData = {
-      first_name: firstName,
-      last_name: lastName,
-    };
     try {
+      const updatedData = {
+        first_name: firstName,
+        last_name: lastName,
+      };
       const { data } = await editContactById({
         variables: { id: contact?.id, _set: updatedData },
       });
@@ -112,10 +105,15 @@ export default function ContactForm({
         if (!isEdit) {
           createContact();
         } else {
-          editContact();
-          handleEditPhoneNumber();
-          Swal.fire("Contact has been saved!", "", "success");
-          router.push("/");
+          try {
+            editContact();
+            handleEditPhoneNumber();
+            fetchContacts();
+            Swal.fire("Contact has been saved!", "", "success");
+            router.push("/");
+          } catch (error) {
+            console.log(error);
+          }
         }
       } else if (result.isDenied) {
         Swal.fire("Changes are not saved", "", "info");

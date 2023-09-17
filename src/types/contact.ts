@@ -33,3 +33,9 @@ export interface ContactDetailModalProps {
   open: boolean;
   fetchContacts: () => void;
 }
+
+export interface ContactFormProps {
+  isEdit: boolean;
+  contact?: ContactProfile;
+  fetchContacts: () => void;
+}
