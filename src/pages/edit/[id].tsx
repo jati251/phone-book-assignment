@@ -1,9 +1,11 @@
 import ContactForm from "@/components/contact-form";
 import { useGetContactDetail } from "@/hooks/contact";
 import BackIcon from "@/icons/back-icon";
+import { ContactContext } from "@/providers/contact-list-provider";
+import { ContactContextType } from "@/types/contact";
 import { Global } from "@emotion/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import tw from "twin.macro";
 
 const globalStyles = {
@@ -14,6 +16,9 @@ const globalStyles = {
 
 export default function EditContactPage() {
   const router = useRouter();
+  const { handleFetchSearch } = useContext(
+    ContactContext
+  ) as ContactContextType;
   const { id } = router.query;
   const { error, contact, loading } = useGetContactDetail(id);
   // console.log(data);
@@ -34,7 +39,11 @@ export default function EditContactPage() {
                 <BackIcon />
               </div>
               <span>Edit Contact</span>
-              <ContactForm contact={contact} />
+              <ContactForm
+                fetchContacts={() => handleFetchSearch(1, "")}
+                isEdit={true}
+                contact={contact}
+              />
             </div>
           </div>
         </main>

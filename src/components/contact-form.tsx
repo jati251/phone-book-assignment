@@ -6,7 +6,17 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import tw from "twin.macro";
 
-export default function ContactForm({ contact }: { contact?: ContactProfile }) {
+interface ContactFormProps {
+  isEdit: boolean;
+  contact?: ContactProfile;
+  fetchContacts: () => void;
+}
+
+export default function ContactForm({
+  fetchContacts,
+  isEdit,
+  contact,
+}: ContactFormProps) {
   const [phoneNumber, setPhoneNumber] = useState([""]);
   const [firstName, setFirstName] = useState("");
   const [lastName, setlastName] = useState("");
@@ -18,6 +28,8 @@ export default function ContactForm({ contact }: { contact?: ContactProfile }) {
     setPhoneNumber([...phoneNumber, ""]);
   };
 
+  //FUNCTIONS
+
   const createContact = async () => {
     const phones = phoneNumber.map((el) => {
       return { number: el };
@@ -27,13 +39,16 @@ export default function ContactForm({ contact }: { contact?: ContactProfile }) {
       const { data } = await AddContactWithPhones({
         variables: { first_name: firstName, last_name: lastName, phones },
       });
-      // console.log("Contact added:", data.insert_contact.returning[0]);
+      console.log("Contact added:", data.insert_contact.returning[0]);
+      fetchContacts();
       Swal.fire("Contact has been saved!", "", "success");
       router.push("/");
     } catch (error) {
       console.log(error);
     }
   };
+
+  const editContact = async () => {};
 
   const handleInputChange = (index: any, event: any) => {
     const updatedInputFields = [...phoneNumber];
@@ -51,12 +66,18 @@ export default function ContactForm({ contact }: { contact?: ContactProfile }) {
       denyButtonText: `Don't save`,
     }).then((result) => {
       if (result.isConfirmed) {
-        createContact();
+        if (!isEdit) {
+          createContact();
+        } else {
+          editContact();
+        }
       } else if (result.isDenied) {
         Swal.fire("Changes are not saved", "", "info");
       }
     });
   };
+
+  //USEEFFECT
 
   useEffect(() => {
     if (contact) {
