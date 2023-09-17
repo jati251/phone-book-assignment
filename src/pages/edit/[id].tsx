@@ -15,14 +15,12 @@ const globalStyles = {
 export default function EditContactPage() {
   const router = useRouter();
   const { id } = router.query;
-  const { error, data, loading } = useGetContactDetail(id);
-  console.log(data);
+  const { error, contact, loading } = useGetContactDetail(id);
+  // console.log(data);
 
   const handleBack = () => {
     router.push("/");
   };
-
-  useEffect(() => {}, [data]);
 
   return (
     <div css={tw`min-h-screen bg-[#F6F7FB] text-[#344054]`}>
@@ -36,7 +34,7 @@ export default function EditContactPage() {
                 <BackIcon />
               </div>
               <span>Edit Contact</span>
-              <ContactForm />
+              <ContactForm contact={contact} />
             </div>
           </div>
         </main>

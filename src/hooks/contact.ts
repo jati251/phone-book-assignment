@@ -58,8 +58,8 @@ export function useGetContactDetail(id: any) {
   const { error, data, loading } = useQuery(GET_CONTACT_DETAIL, {
     variables: { id },
   });
-
-  return { error, loading, data };
+  const contact = data?.contact_by_pk;
+  return { error, loading, contact };
 }
 
 export function useGetPhoneList() {

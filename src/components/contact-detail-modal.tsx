@@ -15,8 +15,8 @@ const ContactDetailModal = ({
   onClose: () => void;
   open: boolean;
 }) => {
-  const [contact, setContact] = useState<ContactProfile>();
-  const { error, data, loading } = useGetContactDetail(id);
+  const [contactDetail, setContactDetail] = useState<ContactProfile>();
+  const { error, contact, loading } = useGetContactDetail(id);
 
   const router = useRouter();
 
@@ -29,9 +29,9 @@ const ContactDetailModal = ({
   };
 
   useEffect(() => {
-    setContact(undefined);
-    setContact(data?.contact_by_pk);
-  }, [data]);
+    setContactDetail(undefined);
+    setContactDetail(contact);
+  }, [contact]);
 
   return (
     <>
@@ -53,7 +53,7 @@ const ContactDetailModal = ({
                 </div>
                 <div css={tw`flex justify-center items-center gap-4`}>
                   <h2 css={tw`text-center text-2xl font-semibold mt-3`}>
-                    {contact?.first_name} {contact?.last_name}
+                    {contactDetail?.first_name} {contactDetail?.last_name}
                   </h2>
                   <div onClick={handleEdit} css={tw`cursor-pointer`}>
                     <EditContactIcon />
@@ -68,7 +68,7 @@ const ContactDetailModal = ({
                   <h3 css={tw`text-sm font-semibold mt-10`}>Phone Numbers</h3>
                   <hr></hr>
 
-                  {contact?.phones.map((el, index) => {
+                  {contactDetail?.phones.map((el, index) => {
                     return (
                       <div key={index} css={tw`my-2`}>
                         <span>{el.number}</span>

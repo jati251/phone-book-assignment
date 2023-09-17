@@ -1,10 +1,14 @@
+import { ContactProfile } from "@/types/contact";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import tw from "twin.macro";
 
-export default function ContactForm() {
+export default function ContactForm({ contact }: { contact?: ContactProfile }) {
   const [phoneNumber, setPhoneNumber] = useState([""]);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setlastName] = useState("");
+
   const router = useRouter();
   const addInput = () => {
     setPhoneNumber([...phoneNumber, ""]);
@@ -41,6 +45,19 @@ export default function ContactForm() {
     // You can send this data to an API, perform validation, or further processing.
     console.log("Form data submitted:", phoneNumber);
   };
+
+  useEffect(() => {
+    if (contact) {
+      const newNumberArray = contact.phones.map((el) => {
+        return el.number;
+      });
+
+      setPhoneNumber(newNumberArray);
+      setFirstName(contact.first_name);
+      setlastName(contact.last_name);
+    }
+  }, [contact]);
+
   return (
     <form
       action="submit"
@@ -57,26 +74,23 @@ export default function ContactForm() {
           </label>
           <input
             type="text"
-            id="first_name"
-            name="first_name"
-            //   value={input}
-            //   onChange={(event) => handleInputChange(index, event)}
+            id="firstName"
+            name="firstName"
+            value={firstName}
+            onChange={(event) => setFirstName(event.currentTarget.value)}
             css={tw`mt-1 rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-2 py-1`}
           />
         </div>
         <div css={tw`flex flex-col lg:w-full `}>
-          <label
-            htmlFor="last_name"
-            css={tw`text-sm font-medium text-gray-700`}
-          >
+          <label htmlFor="lastName" css={tw`text-sm font-medium text-gray-700`}>
             Last Name
           </label>
           <input
             type="text"
-            id="last_name"
-            name="last_name"
-            //   value={input}
-            //   onChange={(event) => handleInputChange(index, event)}
+            id="lastName"
+            name="lastName"
+            value={lastName}
+            onChange={(event) => setlastName(event.currentTarget.value)}
             css={tw`mt-1 rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm px-2 py-1`}
           />
         </div>
