@@ -33,15 +33,16 @@ export default function Home() {
 
   const handleAddBookmark = (i: number) => {
     const newArray = bookmarked;
-    contacts && newArray.push(contacts[i]);
+    contactList && newArray.push(contactList[i]);
 
     setBookmarked(newArray);
     setContacts(contacts.filter((item, index) => index !== i));
   };
 
   const handleRemoveBookmark = (i: number) => {
-    const newArray = contacts;
-    contacts && newArray.push(bookmarked[i]);
+    const newArray = contactList;
+    contactList && newArray.push(bookmarked[i]);
+
     setBookmarked(bookmarked.filter((item, index) => index !== i));
     setContacts(newArray);
   };
