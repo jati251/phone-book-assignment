@@ -1,7 +1,9 @@
 import ContactForm from "@/components/contact-form";
+import { useGetContactDetail } from "@/hooks/contact";
 import BackIcon from "@/icons/back-icon";
 import { Global } from "@emotion/react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import tw from "twin.macro";
 
 const globalStyles = {
@@ -10,12 +12,17 @@ const globalStyles = {
   },
 };
 
-export default function AddContactPage() {
+export default function EditContactPage() {
   const router = useRouter();
+  const { id } = router.query;
+  const { error, data, loading } = useGetContactDetail(id);
+  console.log(data);
 
   const handleBack = () => {
     router.push("/");
   };
+
+  useEffect(() => {}, [data]);
 
   return (
     <div css={tw`min-h-screen bg-[#F6F7FB] text-[#344054]`}>
@@ -28,7 +35,7 @@ export default function AddContactPage() {
               <div onClick={handleBack} css={tw`my-2`}>
                 <BackIcon />
               </div>
-              <span>Add Contact</span>
+              <span>Edit Contact</span>
               <ContactForm />
             </div>
           </div>
