@@ -14,3 +14,8 @@ export interface PhoneNumber {
   number: string;
   __typename: string;
 }
+
+export type ContactContextType = {
+  useHandleFetchSearch: (page: number, name: string) => void;
+  contacts: ContactProfile[];
+};

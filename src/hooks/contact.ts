@@ -28,20 +28,19 @@ export function useGetContactList() {
     }
   `;
 
-  const { error, data, loading } = useQuery(GET_CONTACT_LIST, {
+  const { error, data, loading, refetch } = useQuery(GET_CONTACT_LIST, {
     variables: {
-      distinct_on: [], // Your distinct_on value here
-      limit: 20, // Your limit value here
-      offset: 0, // Your offset value here
-      order_by: [], // Your order_by value here
-      where: null, // Your where condition here
+      limit: 10,
+      offset: 0,
     },
   });
 
-  return { error, loading, data };
+  const contacts = data?.contact;
+
+  return { error, loading, contacts, refetch };
 }
 
-export async function useGetContactDetail(id: number) {
+export function useGetContactDetail(id: any) {
   const GET_CONTACT_DETAIL = gql`
     query GetContactDetail($id: Int!) {
       contact_by_pk(id: $id) {
@@ -63,7 +62,7 @@ export async function useGetContactDetail(id: number) {
   return { error, loading, data };
 }
 
-export async function useGetPhoneList() {
+export function useGetPhoneList() {
   const GET_PHONE_LIST = gql`
     query GetPhoneList(
       $where: phone_bool_exp
@@ -105,7 +104,7 @@ export async function useGetPhoneList() {
 
 //CREATE
 
-export async function useAddContactWithPhones(payload: CreateContactProps) {
+export function useAddContactWithPhones(payload: CreateContactProps) {
   const { first_name, last_name, phones } = payload;
   const ADD_CONTACT_WITH_PHONES = gql`
     mutation AddContactWithPhones(
@@ -143,7 +142,7 @@ export async function useAddContactWithPhones(payload: CreateContactProps) {
   return { error, data, loading };
 }
 
-export async function useAddNumberToContact(
+export function useAddNumberToContact(
   contact_id: number,
   phone_number: string
 ) {
@@ -178,7 +177,7 @@ export async function useAddNumberToContact(
 
 //EDIT
 
-export async function useEditContact(payload: CreateContactProps) {
+export function useEditContact(payload: CreateContactProps) {
   const { first_name, last_name } = payload;
   const EDIT_CONTACT_BY_ID = gql`
     mutation EditContactById($id: Int!, $_set: contact_set_input) {
@@ -206,7 +205,7 @@ export async function useEditContact(payload: CreateContactProps) {
   return { error, data, loading };
 }
 
-export async function useEditPhoneNumber(
+export function useEditPhoneNumber(
   number: string,
   contact_id: string,
   new_phone_number: string
@@ -247,7 +246,7 @@ export async function useEditPhoneNumber(
 }
 
 //DELETE
-export async function useDeleteContactPhone(id: number) {
+export function useDeleteContactPhone(id: number) {
   const DELETE_CONTACT_PHONE = gql`
     mutation MyMutation($id: Int!) {
       delete_contact_by_pk(id: $id) {

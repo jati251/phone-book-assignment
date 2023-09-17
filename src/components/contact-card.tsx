@@ -5,7 +5,7 @@ import BookmarkIcon from "@/icons/bookmark-icon";
 import AddBookmarkIcon from "@/icons/add-bookmark-icon";
 
 const containerStyles = css`
-  ${tw`flex justify-between cursor-pointer gap-2 relative p-4 w-full bg-white rounded-lg overflow-hidden shadow hover:shadow-md`}
+  ${tw`flex justify-between cursor-pointer gap-2 relative p-4 w-full bg-white rounded-lg shadow hover:shadow-md`}
 `;
 
 const avatarStyles = css`
@@ -13,26 +13,35 @@ const avatarStyles = css`
 `;
 
 const nameStyles = css`
-  ${tw`ml-3 font-medium text-gray-800`}
+  ${tw`ml-3 font-medium text-sm lg:text-lg  text-gray-800`}
 `;
 
 const onlineStyles = css`
-  ${tw`text-sm text-gray-600`}
+  ${tw`text-xs lg:text-sm text-gray-600`}
 `;
 
 function ContactCard({
-  addToBookmark,
-  removeBookmark,
+  handleDetail,
+  handleBookMark,
   isBoorkmark,
   contact,
 }: {
-  addToBookmark?: () => void;
-  removeBookmark?: () => void;
+  handleBookMark: () => void;
   isBoorkmark: boolean;
   contact: ContactProfile;
+  handleDetail: () => void;
 }) {
+  const handleBookmark = (e: any) => {
+    e.stopPropagation();
+    handleBookMark();
+  };
+
+  const handleClick = () => {
+    handleDetail();
+  };
+
   return (
-    <div css={containerStyles}>
+    <div onClick={handleClick} css={containerStyles}>
       <div
         css={css`
           ${tw`flex items-center`}
@@ -51,11 +60,11 @@ function ContactCard({
         `}
       >
         {isBoorkmark ? (
-          <div onClick={removeBookmark} css={tw`z-40`}>
+          <div onClick={handleBookmark} css={tw`z-40`}>
             <BookmarkIcon />
           </div>
         ) : (
-          <div onClick={addToBookmark} css={tw`z-40`}>
+          <div onClick={handleBookmark} css={tw`z-40`}>
             <AddBookmarkIcon />
           </div>
         )}
