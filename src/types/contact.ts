@@ -12,7 +12,7 @@ export interface ContactProfile extends CreateContactProps {
 
 export interface PhoneNumber {
   number: string;
-  __typename: string;
+  __typename?: string;
 }
 
 export type ContactContextType = {
