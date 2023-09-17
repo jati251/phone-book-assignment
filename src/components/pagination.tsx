@@ -4,14 +4,14 @@ interface PaginationProps {
   totalItems: number;
   itemsPerPage: number;
   onPageChange: (newPage: number) => void;
-  maxPageNumbersToShow?: number; // Define the maximum number of page numbers to show
+  maxPageNumbersToShow?: number;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
   totalItems,
   itemsPerPage,
   onPageChange,
-  maxPageNumbersToShow = 5, // Default to 5 page numbers
+  maxPageNumbersToShow = 5,
 }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const [currentPage, setCurrentPage] = useState(1);

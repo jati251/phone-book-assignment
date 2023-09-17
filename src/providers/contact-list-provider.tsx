@@ -17,7 +17,6 @@ const ContactListProvider = ({ children }: any) => {
       variables.where = { first_name: { _like: `%${value}%` } };
       variables.offset = 0;
     }
-
     refetch(variables);
   };
 

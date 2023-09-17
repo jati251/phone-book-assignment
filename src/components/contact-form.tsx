@@ -1,4 +1,6 @@
+import { ADD_CONTACT_WITH_PHONES } from "@/hooks/contact";
 import { ContactProfile } from "@/types/contact";
+import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -9,14 +11,28 @@ export default function ContactForm({ contact }: { contact?: ContactProfile }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setlastName] = useState("");
 
+  const [AddContactWithPhones] = useMutation(ADD_CONTACT_WITH_PHONES);
+
   const router = useRouter();
   const addInput = () => {
     setPhoneNumber([...phoneNumber, ""]);
   };
 
-  const createContact = () => {
-    Swal.fire("Saved!", "", "success");
-    router.push("/");
+  const createContact = async () => {
+    const phones = phoneNumber.map((el) => {
+      return { number: el };
+    });
+
+    try {
+      const { data } = await AddContactWithPhones({
+        variables: { first_name: firstName, last_name: lastName, phones },
+      });
+      // console.log("Contact added:", data.insert_contact.returning[0]);
+      Swal.fire("Contact has been saved!", "", "success");
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleInputChange = (index: any, event: any) => {
@@ -26,7 +42,7 @@ export default function ContactForm({ contact }: { contact?: ContactProfile }) {
   };
 
   const handleSubmit = (event: any) => {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault();
     Swal.fire({
       title: "Do you want to save the contact?",
       showDenyButton: true,
@@ -34,16 +50,12 @@ export default function ContactForm({ contact }: { contact?: ContactProfile }) {
       confirmButtonText: "Save",
       denyButtonText: `Don't save`,
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         createContact();
       } else if (result.isDenied) {
         Swal.fire("Changes are not saved", "", "info");
       }
     });
-    // Here, you can access the input field values in the `inputFields` state
-    // You can send this data to an API, perform validation, or further processing.
-    console.log("Form data submitted:", phoneNumber);
   };
 
   useEffect(() => {

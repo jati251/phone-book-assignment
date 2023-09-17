@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from "react";
 import Outside from "./outside";
 import { ContactProfile } from "@/types/contact";
-import { useGetContactDetail } from "@/hooks/contact";
+import { DELETE_CONTACT_PHONE, useGetContactDetail } from "@/hooks/contact";
 import tw from "twin.macro";
 import EditContactIcon from "@/icons/edit-contact-icon";
 import { useRouter } from "next/router";
 import DeleteIcon from "@/icons/delete-icon";
 import Swal from "sweetalert2";
+import { useMutation } from "@apollo/client";
 
 const ContactDetailModal = ({
   id,
   onClose,
   open,
+  fetchContacts,
 }: {
   id: number;
   onClose: () => void;
   open: boolean;
+  fetchContacts: () => void;
 }) => {
   const [contactDetail, setContactDetail] = useState<ContactProfile>();
   const { error, contact, loading } = useGetContactDetail(id);
+
+  const [DeleteContact] = useMutation(DELETE_CONTACT_PHONE);
 
   const router = useRouter();
 
@@ -30,6 +35,20 @@ const ContactDetailModal = ({
     router.push(`/edit/${id}`);
   };
 
+  const deleteContact = async () => {
+    try {
+      const { data } = await DeleteContact({
+        variables: { id: contactDetail?.id },
+      });
+
+      console.log("Phone deleted:", data.delete_contact_by_pk);
+      Swal.fire("Contact has been deleted", "", "success");
+      fetchContacts();
+    } catch (error) {
+      console.error("Error deleting phone:", error);
+    }
+  };
+
   const handleDelete = () => {
     Swal.fire({
       title: "Do you want delete this contact?",
@@ -39,7 +58,7 @@ const ContactDetailModal = ({
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire("Contact has been deleted", "", "success");
+        deleteContact();
       } else if (result.isDenied) {
         Swal.fire("Changes are not saved", "", "info");
       }

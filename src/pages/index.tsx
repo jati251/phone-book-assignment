@@ -7,14 +7,22 @@ import { ContactContext } from "@/providers/contact-list-provider";
 import { ContactContextType, ContactProfile } from "@/types/contact";
 import { Global } from "@emotion/react";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState, createContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import tw from "twin.macro";
 
 export default function Home() {
+  const globalStyles = {
+    "*": {
+      fontFamily: '"Open Sauce One", "Nunito Sans", sans-serif',
+    },
+  };
+  //ROUTER & FETCH
   const router = useRouter();
   const { contacts, handleFetchSearch } = useContext(
     ContactContext
   ) as ContactContextType;
+
+  //PAGINATION CONFIG
 
   const totalItems = 40;
   const itemsPerPage = 10;
@@ -22,12 +30,20 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [currentContact, setCurrentContact] = useState<number>(0);
 
+  // STATE CONTACTS
+
   const [contactList, setContacts] = useState<ContactProfile[]>([]);
   const [bookmarked, setBookmarked] = useState<ContactProfile[]>([]);
 
+  //SEARCH
+
   const [name, setName] = useState<string>("");
 
+  //MODAL DETAIL
+
   const [showModalDetail, setShowModalDetail] = useState<boolean>(false);
+
+  //FUNCTIONS
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
@@ -57,14 +73,10 @@ export default function Home() {
 
   const handleAdd = (e: any) => {
     e.preventDefault();
-    router.push('/add')
+    router.push("/add");
   };
 
-  const globalStyles = {
-    "*": {
-      fontFamily: '"Open Sauce One", "Nunito Sans", sans-serif',
-    },
-  };
+  //USEEFFECT
 
   useEffect(() => {
     const data = localStorage.getItem("contacts") || null;
@@ -84,7 +96,7 @@ export default function Home() {
               css={tw`flex flex-col gap-4 justify-start w-full py-3 font-bold text-2xl`}
             >
               <span>Contact List</span>
-              <form action="submit" onSubmit={handleSearch} >
+              <form action="submit" onSubmit={handleSearch}>
                 <div>
                   <div css={tw`flex gap-2`}>
                     <input
@@ -149,6 +161,7 @@ export default function Home() {
             open={showModalDetail}
             onClose={() => setShowModalDetail(false)}
             id={currentContact}
+            fetchContacts={() => handleFetchSearch(currentPage, name)}
           />
         </main>
       </div>
