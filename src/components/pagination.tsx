@@ -67,7 +67,7 @@ const Pagination: React.FC<PaginationProps> = ({
                   cursor: "pointer",
                   padding: "8px 12px",
                   backgroundColor:
-                    i + 1 === currentPage ? "#007bff" : "#f0f0f0",
+                    i + 1 === currentPage ? "#00AA5B" : "#f0f0f0",
                   borderRadius: "4px",
                   color: i + 1 === currentPage ? "#fff" : "initial",
                   transition: "background-color 0.2s ease",

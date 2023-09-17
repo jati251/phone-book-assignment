@@ -57,8 +57,8 @@ const ContactDetailModal = ({
 
                   {contact?.phones.map((el, index) => {
                     return (
-                      <div>
-                        <span key={index}>{el.number}</span>
+                      <div key={index}>
+                        <span>{el.number}</span>
                       </div>
                     );
                   })}
