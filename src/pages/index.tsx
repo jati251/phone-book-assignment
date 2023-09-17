@@ -6,10 +6,12 @@ import AddContactIcon from "@/icons/add-contact-icon";
 import { ContactContext } from "@/providers/contact-list-provider";
 import { ContactContextType, ContactProfile } from "@/types/contact";
 import { Global } from "@emotion/react";
+import { useRouter } from "next/router";
 import { useContext, useEffect, useState, createContext } from "react";
 import tw from "twin.macro";
 
 export default function Home() {
+  const router = useRouter();
   const { contacts, handleFetchSearch } = useContext(
     ContactContext
   ) as ContactContextType;
@@ -55,6 +57,7 @@ export default function Home() {
 
   const handleAdd = (e: any) => {
     e.preventDefault();
+    router.push('/add')
   };
 
   const globalStyles = {
@@ -81,7 +84,7 @@ export default function Home() {
               css={tw`flex flex-col gap-4 justify-start w-full py-3 font-bold text-2xl`}
             >
               <span>Contact List</span>
-              <form action="submit" onSubmit={handleSearch} css={tw``}>
+              <form action="submit" onSubmit={handleSearch} >
                 <div>
                   <div css={tw`flex gap-2`}>
                     <input
