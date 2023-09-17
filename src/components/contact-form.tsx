@@ -112,14 +112,10 @@ export default function ContactForm({
         if (!isEdit) {
           createContact();
         } else {
-          try {
-            editContact();
-            handleEditPhoneNumber();
-            Swal.fire("Contact has been saved!", "", "success");
-            router.push("/");
-          } catch (error) {
-            console.log(error);
-          }
+          editContact();
+          handleEditPhoneNumber();
+          Swal.fire("Contact has been saved!", "", "success");
+          router.push("/");
         }
       } else if (result.isDenied) {
         Swal.fire("Changes are not saved", "", "info");

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Outside from "./outside";
-import { ContactProfile } from "@/types/contact";
+import { ContactDetailModalProps, ContactProfile } from "@/types/contact";
 import { DELETE_CONTACT_PHONE, useGetContactDetail } from "@/hooks/contact";
 import tw from "twin.macro";
 import EditContactIcon from "@/icons/edit-contact-icon";
@@ -14,14 +14,9 @@ const ContactDetailModal = ({
   onClose,
   open,
   fetchContacts,
-}: {
-  id: number;
-  onClose: () => void;
-  open: boolean;
-  fetchContacts: () => void;
-}) => {
+}: ContactDetailModalProps) => {
   const [contactDetail, setContactDetail] = useState<ContactProfile>();
-  const { error, contact, loading } = useGetContactDetail(id);
+  const { contact } = useGetContactDetail(id);
 
   const [DeleteContact] = useMutation(DELETE_CONTACT_PHONE);
 

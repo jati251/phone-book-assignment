@@ -1,6 +1,6 @@
 import tw from "twin.macro";
 import { css } from "@emotion/react";
-import { ContactProfile } from "@/types/contact";
+import { ContactCardProps, ContactProfile } from "@/types/contact";
 import BookmarkIcon from "@/icons/bookmark-icon";
 import AddBookmarkIcon from "@/icons/add-bookmark-icon";
 
@@ -25,12 +25,7 @@ function ContactCard({
   handleBookMark,
   isBoorkmark,
   contact,
-}: {
-  handleBookMark: () => void;
-  isBoorkmark: boolean;
-  contact: ContactProfile;
-  handleDetail: () => void;
-}) {
+}: ContactCardProps) {
   const handleBookmark = (e: any) => {
     e.stopPropagation();
     handleBookMark();

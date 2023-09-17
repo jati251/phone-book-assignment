@@ -19,3 +19,17 @@ export type ContactContextType = {
   handleFetchSearch: (page: number, name: string) => void;
   contacts: ContactProfile[];
 };
+
+export interface ContactCardProps {
+  handleBookMark: () => void;
+  isBoorkmark: boolean;
+  contact: ContactProfile;
+  handleDetail: () => void;
+}
+
+export interface ContactDetailModalProps {
+  id: number;
+  onClose: () => void;
+  open: boolean;
+  fetchContacts: () => void;
+}
