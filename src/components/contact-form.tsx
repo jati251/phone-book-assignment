@@ -1,4 +1,9 @@
-import { ADD_CONTACT_WITH_PHONES } from "@/hooks/contact";
+import {
+  ADD_CONTACT_WITH_PHONES,
+  ADD_NUMBER_TO_CONTACT,
+  EDIT_CONTACT_BY_ID,
+  EDIT_PHONE_NUMBER,
+} from "@/hooks/contact";
 import { ContactProfile } from "@/types/contact";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
@@ -22,6 +27,9 @@ export default function ContactForm({
   const [lastName, setlastName] = useState("");
 
   const [AddContactWithPhones] = useMutation(ADD_CONTACT_WITH_PHONES);
+  const [editContactById] = useMutation(EDIT_CONTACT_BY_ID);
+  const [editPhoneNumber] = useMutation(EDIT_PHONE_NUMBER);
+  const [addPhoneNumber] = useMutation(ADD_NUMBER_TO_CONTACT);
 
   const router = useRouter();
   const addInput = () => {
@@ -39,7 +47,6 @@ export default function ContactForm({
       const { data } = await AddContactWithPhones({
         variables: { first_name: firstName, last_name: lastName, phones },
       });
-      console.log("Contact added:", data.insert_contact.returning[0]);
       fetchContacts();
       Swal.fire("Contact has been saved!", "", "success");
       router.push("/");
@@ -48,7 +55,43 @@ export default function ContactForm({
     }
   };
 
-  const editContact = async () => {};
+  const editContact = async () => {
+    const updatedData = {
+      first_name: firstName,
+      last_name: lastName,
+    };
+    try {
+      const { data } = await editContactById({
+        variables: { id: contact?.id, _set: updatedData },
+      });
+    } catch (error) {
+      console.error("Error editing contact:", error);
+    }
+  };
+
+  const handleEditPhoneNumber = async () => {
+    phoneNumber.forEach(async (el, index) => {
+      try {
+        if (contact?.phones[index]) {
+          const { data } = await editPhoneNumber({
+            variables: {
+              pk_columns: {
+                number: contact?.phones[index].number,
+                contact_id: contact?.id,
+              },
+              new_phone_number: el,
+            },
+          });
+        } else {
+          const { data } = await addPhoneNumber({
+            variables: { contact_id: contact?.id, phone_number: el },
+          });
+        }
+      } catch (error) {
+        console.error("Error editing phone number:", error);
+      }
+    });
+  };
 
   const handleInputChange = (index: any, event: any) => {
     const updatedInputFields = [...phoneNumber];
@@ -69,7 +112,14 @@ export default function ContactForm({
         if (!isEdit) {
           createContact();
         } else {
-          editContact();
+          try {
+            editContact();
+            handleEditPhoneNumber();
+            Swal.fire("Contact has been saved!", "", "success");
+            router.push("/");
+          } catch (error) {
+            console.log(error);
+          }
         }
       } else if (result.isDenied) {
         Swal.fire("Changes are not saved", "", "info");
@@ -131,6 +181,7 @@ export default function ContactForm({
       <button
         type="button"
         onClick={addInput}
+        // disabled={isEdit}
         css={tw`border-none bg-white hover:text-gray-500 cursor-pointer px-4 rounded`}
       >
         + Add More Number

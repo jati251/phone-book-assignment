@@ -21,7 +21,6 @@ export default function EditContactPage() {
   ) as ContactContextType;
   const { id } = router.query;
   const { error, contact, loading } = useGetContactDetail(id);
-  // console.log(data);
 
   const handleBack = () => {
     router.push("/");

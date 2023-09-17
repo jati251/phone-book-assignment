@@ -1,4 +1,3 @@
-import { CreateContactProps } from "@/types/contact";
 import { gql, useQuery } from "@apollo/client";
 
 export function useGetContactList() {

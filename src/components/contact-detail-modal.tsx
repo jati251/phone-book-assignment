@@ -79,7 +79,7 @@ const ContactDetailModal = ({
           <Outside onClick={handleClose}>
             <article>
               <div
-                css={tw` w-[222px] h-screen lg:h-auto overflow-y-auto bg-white rounded-lg shadow-md p-8`}
+                css={tw` w-[250px] h-screen lg:h-auto overflow-y-auto bg-white rounded-lg shadow-md p-8`}
               >
                 <div css={tw`flex mt-20`}>
                   <img
@@ -89,7 +89,7 @@ const ContactDetailModal = ({
                   ></img>
                 </div>
                 <div css={tw`flex justify-center items-center gap-3`}>
-                  <h2 css={tw`text-center text-2xl font-semibold mt-3`}>
+                  <h2 css={tw`text-center text-xl font-semibold mt-3`}>
                     {contactDetail?.first_name} {contactDetail?.last_name}
                   </h2>
                   <div onClick={handleEdit} css={tw`cursor-pointer`}>
